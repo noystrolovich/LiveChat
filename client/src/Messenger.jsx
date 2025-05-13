@@ -3,13 +3,12 @@ import { io } from 'socket.io-client';
 import React, { useState, useEffect } from 'react';
 import {useSelector} from 'react-redux'
 
-// יצירת החיבור ל-WebSocket מחוץ לקומפוננטה
 const socket = io('ws://localhost:3000', { autoConnect: false });
 
 function Messenger() {
-  const [message, setMessage] = useState(''); // שדה הודעה
-  const [chat, setChat] = useState([]); // רשימת הצ'אט
-  const [sessionId, setSessionId] = useState(null); // מזהה סשן
+  const [message, setMessage] = useState(''); 
+  const [chat, setChat] = useState([]); 
+  const [sessionId, setSessionId] = useState(null);
   const loginName = useSelector((state)=>state.loginName)
 
   useEffect(() => {
@@ -17,7 +16,7 @@ function Messenger() {
 
     socket.on('connect', () => {
       console.log(`Connected to WebSocket with session ID: ${socket.id}, and Name: ${loginName}`);
-      setSessionId(socket.id); // שמירת מזהה הסשן
+      setSessionId(socket.id);
     });
 
     socket.on('receiveMessage', (data) => {
@@ -38,10 +37,9 @@ function Messenger() {
       return;
     }
 
-    // שליחת ההודעה לשרת בלבד
     socket.emit('sendMessage', {sender: loginName, msg: message});
 
-    setMessage(''); // ניקוי שדה ההודעה
+    setMessage('');
   };
 
   return (
@@ -49,7 +47,6 @@ function Messenger() {
       <div className="app">
         <div className="chat-window">
           <div className="chat-container">
-            {/* הצגת הצ'אט */}
             <div className="chat-content">
               {chat.map((m, index) => (
                 <h3 key={index}>
@@ -59,7 +56,6 @@ function Messenger() {
               ))}
             </div>
 
-            {/* שדה הודעה */}
             <div className="message-input-container">
               <input
                 type="text"
